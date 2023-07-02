@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tekla.Extension", "Tekla.Extension\Tekla.Extension.csproj", "{03C19A66-26C8-4572-A784-E0F59E513CD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03C19A66-26C8-4572-A784-E0F59E513CD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03C19A66-26C8-4572-A784-E0F59E513CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03C19A66-26C8-4572-A784-E0F59E513CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03C19A66-26C8-4572-A784-E0F59E513CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3220B644-27E9-45CD-B084-26683924B638}
+	EndGlobalSection
+EndGlobal
