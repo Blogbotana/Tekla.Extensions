@@ -82,15 +82,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drawer.cs" />
     <Compile Include="LinqExtension.cs" />
+    <Compile Include="PointExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AssemblyExtension\" />
-    <Folder Include="BoltExtension\" />
-    <Folder Include="PartExtension\" />
-    <Folder Include="PointExtension\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
