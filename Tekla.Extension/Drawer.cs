@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Tekla.Structures.Geometry3d;
-using Tekla.Structures.Model;
 using Tekla.Structures.Model.UI;
 
 namespace Tekla.Extension
@@ -13,7 +11,7 @@ namespace Tekla.Extension
     public static class Drawer
     {
         #region Fields 
-        private static GraphicsDrawer graphicsDrawer = new();
+        private static readonly GraphicsDrawer graphicsDrawer = new();
         #endregion
         #region Colors
         /// <summary>
@@ -163,6 +161,52 @@ namespace Tekla.Extension
         public static void DrawPoints(this IEnumerable<Point> points)
         {
             DrawPoints(points, Blue);
+        }
+        #endregion
+        #region Arrow Methods
+        public static void DrawCross(this Point point, Color colorOfCross, double length = 100)
+        {
+            double koef = Math.Sqrt(2);
+            Point point1 = new(point);
+            point1.Translate(-length * 0.5 * koef, -length * 0.5 * koef, 0);
+            Point point2 = new(point);
+            point2.Translate(length * 0.5 * koef, length * 0.5 * koef, 0);
+            Point point3 = new(point);
+            point3.Translate(-length * 0.5 * koef, length * 0.5 * koef, 0);
+            Point point4 = new(point);
+            point4.Translate(length * 0.5 * koef, -length * 0.5 * koef, 0);
+            DrawLine(point1, point2, colorOfCross);
+            DrawLine(point3, point4, colorOfCross);
+        }
+
+        public static void DrawCross(this Point point, double length = 100)
+        {
+            DrawCross(point, DarkBlue, length);
+        }
+
+        #endregion
+        #region CoordinateSystem Methods
+        public static void DrawCS(this CoordinateSystem coordinateSystem, string comment = "")
+        {
+            DrawCS(coordinateSystem, Black, comment);
+        }
+        public static void DrawCS(this CoordinateSystem coordinateSystem, Color colorOfText, string comment = "")
+        {
+            double lineLength = 500;
+            Vector vectorZ = coordinateSystem.AxisX.Cross(coordinateSystem.AxisY);
+            _ = coordinateSystem.AxisX.Normalize(lineLength);
+            _ = coordinateSystem.AxisY.Normalize(lineLength);
+            _ = vectorZ.Normalize(lineLength);
+            Point point1 = new(coordinateSystem.Origin + coordinateSystem.AxisX);
+            Point point2 = new(coordinateSystem.Origin + coordinateSystem.AxisY);
+            Point point3 = new(coordinateSystem.Origin + vectorZ);
+            _ = graphicsDrawer.DrawLineSegment(coordinateSystem.Origin, point1, Red);
+            _ = graphicsDrawer.DrawLineSegment(coordinateSystem.Origin, point2, Green);
+            _ = graphicsDrawer.DrawLineSegment(coordinateSystem.Origin, point3, DarkBlue);
+            point1.DrawPoint("X", colorOfText);
+            point2.DrawPoint("Y", colorOfText);
+            point3.DrawPoint("Z", colorOfText);
+            coordinateSystem.Origin.DrawPoint(comment, colorOfText);
         }
         #endregion
     }

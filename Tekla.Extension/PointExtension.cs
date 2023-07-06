@@ -7,7 +7,7 @@ using Tekla.Structures.Model;
 namespace Tekla.Extension
 {
     /// <summary>
-    /// Extension class for working with Points in Tekla
+    /// Extension class for working with Point class in Tekla Structures
     /// </summary>
     public static class PointExtension
     {
@@ -52,7 +52,7 @@ namespace Tekla.Extension
         /// <param name="point1">First point</param>
         /// <param name="point2">Second point</param>
         /// <returns>The nearest point (first or second)</returns>
-        public static Point GetNearestPoint(Point originPoint, Point point1, Point point2)
+        public static Point GetNearestPoint(this Point originPoint, Point point1, Point point2)
         {
             return (Distance.PointToPoint(originPoint, point1) < Distance.PointToPoint(originPoint, point2)) ? point1 : point2;
         }
@@ -62,7 +62,7 @@ namespace Tekla.Extension
         /// <param name="originPoint">The point to compare</param>
         /// <param name="points">Array of points</param>
         /// <returns>The nearest point in array</returns>
-        public static Point GetNearestPoint(Point originPoint, IEnumerable<Point> points)
+        public static Point GetNearestPoint(this Point originPoint, IEnumerable<Point> points)
         {
             return points.OrderBy(p => Distance.PointToPoint(originPoint, p)).FirstOrDefault();
         }
@@ -90,7 +90,7 @@ namespace Tekla.Extension
         /// </summary>
         /// <param name="points"></param>
         /// <returns>Minimum value</returns>
-        public static double GetMinimumDistance(IEnumerable<Point> points)
+        public static double GetMinimumDistance(this IEnumerable<Point> points)
         {
             return points.Select((p, i) => SelectDistances(points, p, i))
                 .Min();
@@ -100,7 +100,7 @@ namespace Tekla.Extension
         /// </summary>
         /// <param name="points"></param>
         /// <returns>Maximum value</returns>
-        public static double GetMaximumDistance(IEnumerable<Point> points)
+        public static double GetMaximumDistance(this IEnumerable<Point> points)
         {
             return points.Select((p, i) => SelectDistances(points, p, i))
                 .Max();
@@ -129,5 +129,26 @@ namespace Tekla.Extension
         {
             return point.X == double.NaN || point.Y == double.NaN || point.Z == double.NaN;
         }
+
+        /// <summary>
+        /// Get collection of line segments of polygon
+        /// </summary>
+        /// <param name="points">Points resresenting polygon</param>
+        /// <param name="isClosed">Is polygon closed</param>
+        /// <returns></returns>
+        public static ICollection<LineSegment> GetLineSegmentsOfPolygon(this IEnumerable<Point> points, bool isClosed = true)
+        {
+            LineSegment[] lineSegments = new LineSegment[isClosed ? points.Count() : points.Count() - 1];
+
+            for (int i = 0; i < lineSegments.Length; i++)
+            {
+                if (i == lineSegments.Length - 1 && isClosed)
+                    lineSegments[i] = new LineSegment(points.Last(), points.First());
+                else
+                    lineSegments[i] = new LineSegment(points.ElementAt(i), points.ElementAt(i + 1));
+            }
+            return lineSegments;
+        }
+        
     }
 }
