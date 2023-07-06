@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawer.cs" />
+    <Compile Include="LineExtension.cs" />
     <Compile Include="LinqExtension.cs" />
     <Compile Include="PointExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

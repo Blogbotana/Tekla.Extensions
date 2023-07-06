@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model.UI;
 
@@ -164,8 +165,9 @@ namespace Tekla.Extension
         }
         #endregion
         #region Arrow Methods
-        public static void DrawCross(this Point point, Color colorOfCross, double length = 100)
+        public static void DrawCross(this Point point, Color colorOfCross = null, double length = 100)
         {
+            colorOfCross ??= Black;
             double koef = Math.Sqrt(2);
             Point point1 = new(point);
             point1.Translate(-length * 0.5 * koef, -length * 0.5 * koef, 0);
@@ -179,19 +181,53 @@ namespace Tekla.Extension
             DrawLine(point3, point4, colorOfCross);
         }
 
-        public static void DrawCross(this Point point, double length = 100)
+        public static void DrawArrow(Point point1, Point point2, Color color, double xSize = 100, double ySize = 100)
         {
-            DrawCross(point, DarkBlue, length);
-        }
+            Vector vectorArrow = new(point2 - point1);
+            Vector vectorNormal = VectorExtension.Z;
+            Vector vectorY = vectorNormal.Cross(vectorArrow);
+            if (vectorY.IsNull())
+            {
+                vectorNormal = VectorExtension.Y;
+                vectorY = vectorNormal.Cross(vectorArrow);
+            }
+            _ = vectorY.Normalize(ySize);
+            Vector vectorX = new(vectorArrow);
+            _ = vectorX.Normalize(xSize);
+            Point pointOfTriangle1 = point2 - vectorX;
+            Point pointOfTriangle2 = pointOfTriangle1 + vectorY;
+            Point pointOfTriangle3 = pointOfTriangle1 - vectorY;
 
+            DrawLine(point2, pointOfTriangle2, color);
+            DrawLine(pointOfTriangle2, pointOfTriangle3, color);
+            DrawLine(point2, pointOfTriangle3, color);
+            DrawLine(point1, point2, color);
+        }
+        public static void DrawArrow(LineSegment segment, Color color = null)
+        {
+            color ??= Blue;
+            DrawArrow(segment.Point1, segment.Point2, color);
+        }
+        public static void DrawArrow(Point point1, Vector vector, Color color = null)
+        {
+            color ??= Blue;
+            DrawArrow(point1, point1 + vector, color);
+        }
+        public static void DrawArrow(Point point1, Vector vector, double length = 500, Color color = null)
+        {
+            color ??= Blue;
+            DrawArrow(point1, point1 + (vector.GetNormal() * length), color);
+        }
+        public static void DrawVector(this Vector vector, Color color = null)
+        {
+            color ??= Red;
+            DrawArrow(new Point(0, 0, 0), new Point(vector.X, vector.Y, vector.Z), color);
+        }
         #endregion
         #region CoordinateSystem Methods
-        public static void DrawCS(this CoordinateSystem coordinateSystem, string comment = "")
+        public static void DrawCS(this CoordinateSystem coordinateSystem, Color colorOfText = null, string comment = "")
         {
-            DrawCS(coordinateSystem, Black, comment);
-        }
-        public static void DrawCS(this CoordinateSystem coordinateSystem, Color colorOfText, string comment = "")
-        {
+            colorOfText ??= Black;
             double lineLength = 500;
             Vector vectorZ = coordinateSystem.AxisX.Cross(coordinateSystem.AxisY);
             _ = coordinateSystem.AxisX.Normalize(lineLength);
@@ -209,5 +245,58 @@ namespace Tekla.Extension
             coordinateSystem.Origin.DrawPoint(comment, colorOfText);
         }
         #endregion
+        #region Polygons
+        public static void DrawArc(this Arc arc, int steps = 10, Color color = null)
+        {
+            color ??= Blue;
+            Point[] points = arc.GetPoints(steps);
+            GraphicPolyLine polyline = new(color, 1, GraphicPolyLine.LineType.Solid)
+            {
+                PolyLine = new PolyLine(points)
+            };
+            graphicsDrawer.DrawPolyLine(polyline);
+        }
+        public static void DrawPolygon(this IEnumerable<LineSegment> polygon, Color color = null)
+        {
+            color ??= Black;
+            foreach (LineSegment line in polygon)
+            {
+                DrawLine(line.Point1, line.Point2, color);
+            }
+        }
+        public static void DrawPolygon(this IEnumerable<Point> polygon, Color color = null)
+        {
+            color ??= Blue;
+            int count = polygon.Count();
+            for (int i = 0; i < count; i++)
+            {
+                if (i == count - 1)
+                {
+                    DrawLine(polygon.Last(), polygon.First(), color);
+                }
+                else
+                {
+                    DrawLine(polygon.ElementAt(i), polygon.ElementAt(i + 1), color);
+                }
+            }
+        }
+        public static void DrawMesh(ICollection<Point> vertexes, ICollection<int> triangles)
+        {
+            Mesh mesh = new();
+            foreach (Point vertex in vertexes)
+            {
+                _ = mesh.AddPoint(vertex);
+            }
+
+            for (int i = 0; i < triangles.Count; i += 3)
+            {
+                mesh.AddTriangle(triangles.ElementAt(i), triangles.ElementAt(i + 1), triangles.ElementAt(i + 2));
+            }
+
+            _ = graphicsDrawer.DrawMeshSurface(mesh, Green);
+            _ = graphicsDrawer.DrawMeshLines(mesh, Black);
+        }
+        #endregion
+        //TODO Add Draw OBB, AABB
     }
 }
