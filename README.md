@@ -1,5 +1,5 @@
 # Tekla.Extensions
-[![Nuget](https://img.shields.io/nuget/dt/Tekla.Extension](https://www.nuget.org/packages/Tekla.Extension/)
+![Nuget](https://img.shields.io/nuget/dt/Tekla.Extension](https://www.nuget.org/packages/Tekla.Extension/)
 
 The best **unofficial** library for Tekla Structures [Open API](https://developer.tekla.com/)
 
