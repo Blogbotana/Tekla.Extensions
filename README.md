@@ -1,7 +1,7 @@
 # Tekla.Extensions
-| NuGet Packages            | Continuous Integration    |
-|---------------------------|---------------------------|
-| [![NuGet](https://img.shields.io/nuget/v/Tekla.Extension.svg)](https://www.nuget.org/packages/Tekla.Extension/) | [![GitHub-actions](https://github.com/Blogbotana/Tekla.Extensions/workflows/CI/badge.svg)](https://github.com/Blogbotana/Tekla.Extensions/actions?query=workflow%3ACI) 
+[![NuGet](https://img.shields.io/nuget/v/Tekla.Extension.svg)](https://www.nuget.org/packages/Tekla.Extension/)
+[![Release](https://img.shields.io/github/release/Blogbotana/Tekla.Extension.svg)](https://github.com/Blogbotana/Tekla.Extension/releases/latest)
+[![License](https://img.shields.io/github/license/Blogbotana/Tekla.Extension.svg)](https://github.com/Blogbotana/Tekla.Extensions/blob/main/LICENSE.md) 
 
 The best **unofficial** library for Tekla Structures [Open API](https://developer.tekla.com/)
 
