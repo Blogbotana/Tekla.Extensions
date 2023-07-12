@@ -1,4 +1,6 @@
 # Tekla.Extensions
+[![Nuget](https://img.shields.io/nuget/dt/Tekla.Extension](https://www.nuget.org/packages/Tekla.Extension/)
+
 The best **unofficial** library for Tekla Structures [Open API](https://developer.tekla.com/)
 
 You can easily change you coding in Tekla Structures with this library
@@ -74,11 +76,11 @@ The Tekla.Extensions library makes use of the 3rd party software package, under 
 
 Create the ussie if you have any question or problems using the library. Our contributors will try to help you
 
-###Tasks to do
-- [ ] Make nuget package
-- [ ] Add Drawer class
+### Tasks to do
+- [x] Make nuget package
 - [ ] Add Assebmy and Part class
-- [ ] Add more exambles for readme file
+- [ ] Add more examples for readme file
+- [ ] Add example project
 - [ ] Make Tests 
 - [ ] Add code conventions
-- [ ] Add wiki
+- [ ] Add Github actions
