@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Tekla.Extension</id>
+    <version>$version$</version>
+    <title>Tekla.Extension</title>
+    <authors>Yury Isachenkov</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">BSD-2-Clause</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/Blogbotana/Tekla.Extensions/tree/main</projectUrl>
+    <description>Extension library for Tekla Structures</description>
+    <releaseNotes>Initial package.</releaseNotes>
+    <copyright>Copyright © Yury Isachenkov 2023</copyright>
+    <tags>Trimble Tekla Structures</tags>
+  </metadata>
+</package>
