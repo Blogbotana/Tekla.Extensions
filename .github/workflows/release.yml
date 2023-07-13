@@ -1,3 +1,4 @@
+name: Create Release
 
 on:
   push:
@@ -7,7 +8,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
-name: Create Release
+permissions:
+  contents: write
+  pull-requests: write
+
 
 jobs:
   build:
@@ -21,7 +25,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: $({secrets.GITHUB_TOKEN})
+          GITHUB_TOKEN: $({github.token})
         with:
           tag_name: $({github.ref})
           release_name: Realease $({github.ref})
