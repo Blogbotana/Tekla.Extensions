@@ -1,8 +1,13 @@
-name: Create Release
 
 on:
   push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*'
+  pull_request:
     branches: [ "main" ]
+
+name: Create Release
 
 jobs:
   build:
