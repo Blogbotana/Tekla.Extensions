@@ -53,9 +53,9 @@ namespace Tekla.Extension
         public static readonly TplPartProfileType MforRectangularTube = new TplPartProfileType("M");
 
         /// <summary>
-        /// String representation of C - shaped beams profile (with bended flanges) type in Tekla API.
+        /// String representation of C - shaped cold formed channel beams profile (with bended flanges) type in Tekla API.
         /// </summary>
-        public static readonly TplPartProfileType CforChannel = new TplPartProfileType("C");
+        public static readonly TplPartProfileType CforCFChannel = new TplPartProfileType("C");
 
         /// <summary>
         /// String representation of T - shaped beams profile type in Tekla API.
