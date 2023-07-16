@@ -64,6 +64,30 @@ using Tekla.Extensions;
                     .Sum();
         }
 ```
+### Use Tpl Classes to improve readability and stop checking manual for exact report attribute values. 
+```csharp
+        public IEnumerable<Part> GetPlatesFromSelection()
+        {
+            TSMUI.ModelObjectSelector selector = new();
+
+            // This will return contour plates and plates what made as the beam class.
+            return selector.GetSelectedObjects()
+                    .ToIEnumerable<Part>()
+                    .Where(part => part.ProfileTypeIs(TplPartProfileType.BforPlates));
+        }
+
+        public IEnumerable<Part> GetAllTubes() {
+            TSMUI.ModelObjectSelector selector = new();
+
+            // Tpl classes have implicit type conversions so you can compare them to string values API working with.
+            string[] tubeProfileTypes = { TplPartProfileType.ROforRoundTube, TplPartProfileType.MforRectangularTube };
+
+            return selector.GetSelectedObjects()
+                    .ToIEnumerable<Part>()
+                    .Where(part => tubeProfileTypes.Any(type => part.ProfileTypeIs(type)));
+        }
+
+```
 
 
 ## Licence
