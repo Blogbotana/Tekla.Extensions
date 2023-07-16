@@ -14,7 +14,7 @@ namespace Tekla.Extension
     {
         
         /// <summary>
-        /// Checks report property PROFILE_TYPE for selected value. Usefull to recognising plates made as beams.
+        /// Checks report property PROFILE_TYPE for selected value. Usefull to recognising plates made as beams for example.
         /// </summary>
         /// <param name="part">Extended class object</param>
         /// <param name="type">String representation of Profile Type as in https://support.tekla.com/doc/tekla-structures/2023/profile_type</param>
