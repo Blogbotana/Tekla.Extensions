@@ -73,9 +73,13 @@ namespace Tekla.Extension
             Value = value;
         }
 
-        public override string ToString()
+        /// <summary>
+        /// Implicit operator that allows class object to be converted to a strings by the runtime.
+        /// </summary>
+        /// <param name="instance">Current class instance to be converted to string.</param>
+        public static implicit operator string(TplPartProfileType instance)
         {
-            return this.Value;
+            return instance.Value;
         }
     }
 }

@@ -17,6 +17,17 @@ namespace Tekla.Extension
         /// Checks report property PROFILE_TYPE for selected value. Usefull to recognising plates made as beams for example.
         /// </summary>
         /// <param name="part">Extended class object</param>
+        /// <param name="type">Custom class which holds string representation of Profile Type as in https://support.tekla.com/doc/tekla-structures/2023/profile_type</param>
+        /// <returns>True if profile type is correct</returns>
+        public static bool ProfileTypeIs(this Part part, TplPartProfileType type)
+        {
+            return part.ProfileTypeIs((string)type);
+        }
+
+        /// <summary>
+        /// Checks report property PROFILE_TYPE for selected value. Usefull to recognising plates made as beams for example.
+        /// </summary>
+        /// <param name="part">Extended class object</param>
         /// <param name="type">String representation of Profile Type as in https://support.tekla.com/doc/tekla-structures/2023/profile_type</param>
         /// <returns>True if profile type is correct</returns>
         public static bool ProfileTypeIs(this Part part, string type)
