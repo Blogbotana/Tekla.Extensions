@@ -50,7 +50,7 @@ using Tekla.Structures.Model;
 ```csharp
 using TSMUI = Tekla.Structures.Model.UI;
 using Tekla.Structures.Model;
-using Tekla.Extensions;
+using Tekla.Extension;
         public double GetWeight()
         {
             //Summing all weight of all parts in Assembly
