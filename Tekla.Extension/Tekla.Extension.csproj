@@ -46,6 +46,11 @@
     <DocumentationFile>bin\Release\Tekla.Extension.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Akit5, Version=5.8.0.0, Culture=neutral, PublicKeyToken=a70cba4ef557ee03, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\Programs\TeklaStructures\2020.0\nt\bin\Akit5.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

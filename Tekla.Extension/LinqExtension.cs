@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Tekla.Structures.Model;
 
-namespace Tekla.Extension.LinqExtension;
+namespace Tekla.Extension;
 
 /// <summary>
 /// Extension class for queries in model
