@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tekla.Extension.TplClasses;
 using Tekla.Structures.Model;
 
 namespace Tekla.Extension
@@ -12,7 +13,12 @@ namespace Tekla.Extension
     /// </summary>
     public static class PartExtension
     {
-        
+        public static ProfileType GetProfileType(this Part part)
+        {
+            string profType = string.Empty;
+            part.GetReportProperty("PROFILE_TYPE", ref profType);
+            
+        }
         /// <summary>
         /// Checks report property PROFILE_TYPE for selected value. Usefull to recognising plates made as beams for example.
         /// </summary>
