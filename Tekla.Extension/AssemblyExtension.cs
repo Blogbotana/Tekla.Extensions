@@ -7,14 +7,14 @@ using Tekla.Structures.Model;
 namespace Tekla.Extension
 {
     /// <summary>
-    /// Class for working with assemblies in Tekla Structures
+    /// Class for working with <see cref="Assembly"/> in Tekla Structures
     /// </summary>
     public static class AssemblyExtension
     {
         public static AABB GetBoundingBox(this Assembly assembly)
         {
-            Point min_X = new(double.MaxValue, double.MaxValue, double.MaxValue);
-            Point max_X = new(double.MinValue, double.MinValue, double.MinValue);
+            Point min = PointExtension.MinPoint;
+            Point max = PointExtension.MaxPoint;
 
             IEnumerable<Part> parts = assembly.GetAllPartsOfAssembly().Cast<Part>();
 
@@ -24,11 +24,11 @@ namespace Tekla.Extension
                 Point min_point = solid.MinimumPoint;
                 Point max_point = solid.MaximumPoint;
 
-                PointExtension.ComparePoints(min_point, min_X, (x1, x2) => x1 < x2);
-                PointExtension.ComparePoints(max_point, max_X, (x1, x2) => x1 > x2);
+                PointExtension.ComparePoints(min_point, min, (x1, x2) => x1 > x2);
+                PointExtension.ComparePoints(max_point, max, (x1, x2) => x1 < x2);
             }
 
-            return new AABB(min_X, max_X);
+            return new AABB(min, max);
         }
 
         public static ICollection<Part> GetAllPartsOfAssembly(this Assembly assembly, bool isIncludeSubAssemblies = false)
@@ -62,6 +62,10 @@ namespace Tekla.Extension
                 return assemblies;
             }
         }
-
+        public static OBB GetOBB(this Assembly assembly)
+        {
+            IEnumerable<OBB> obbs = assembly.GetAllPartsOfAssembly().Select(p => p.GetPartOBB());
+            return OBBExtension.CombineOBBs(obbs);
+        }
     }
 }

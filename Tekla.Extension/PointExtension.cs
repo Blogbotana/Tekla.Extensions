@@ -7,10 +7,12 @@ using Tekla.Structures.Model;
 namespace Tekla.Extension
 {
     /// <summary>
-    /// Extension class for working with Point class in Tekla Structures
+    /// Extension class for working with <see cref="Point"/> in Tekla Structures
     /// </summary>
     public static class PointExtension
     {
+        public static Point MaxPoint => new Point(double.MaxValue, double.MaxValue, double.MaxValue);
+        public static Point MinPoint => new Point(double.MinValue, double.MinValue, double.MinValue);
         /// <summary>
         /// Returns the center point between two points
         /// </summary>
@@ -65,6 +67,16 @@ namespace Tekla.Extension
         public static Point GetNearestPoint(this Point originPoint, IEnumerable<Point> points)
         {
             return points.OrderBy(p => Distance.PointToPoint(originPoint, p)).FirstOrDefault();
+        }
+        /// <summary>
+        /// Get the remote point of collection of points
+        /// </summary>
+        /// <param name="originPoint">The point to compare</param>
+        /// <param name="points">Array of points</param>
+        /// <returns>The remote point in array</returns>
+        public static Point GetRemotePoint(this Point originPoint, IEnumerable<Point> points)
+        {
+            return points.OrderByDescending(p => Distance.PointToPoint(originPoint, p)).FirstOrDefault();
         }
         /// <summary>
         /// Convert Point to ContourPoint
@@ -150,16 +162,29 @@ namespace Tekla.Extension
             return lineSegments;
         }
 
-        public static void ComparePoints(Point thisPoint, Point pointToWrite, Func<double, double, bool> CompareMethod = null)
+        public static void ComparePoints(Point thisPoint, Point pointToWrite, Func<double, double, bool> Comparer = null)
         {
-            CompareMethod ??= (x,y) => Math.Max(x,y) == x;
+            Comparer ??= (x, y) => Math.Max(x, y) == x;
 
-            if (CompareMethod(thisPoint.X, pointToWrite.X))
+            if (Comparer(thisPoint.X, pointToWrite.X))
                 pointToWrite.X = thisPoint.X;
-            if (CompareMethod(thisPoint.Y, pointToWrite.Y))
+            if (Comparer(thisPoint.Y, pointToWrite.Y))
                 pointToWrite.Y = thisPoint.Y;
-            if (CompareMethod(thisPoint.Z, pointToWrite.Z))
+            if (Comparer(thisPoint.Z, pointToWrite.Z))
                 pointToWrite.Z = thisPoint.Z;
+        }
+        public static AABB GetPolygonAABB(IEnumerable<Point> points)
+        {
+            Point min = MinPoint;
+            Point max = MaxPoint;
+
+            foreach (Point item in points)
+            {
+                ComparePoints(item, min, (x, y) => x > y);
+                ComparePoints(item, max, (x, y) => x < y);
+            }
+
+            return new AABB(min, max);
         }
     }
 }

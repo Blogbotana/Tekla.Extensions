@@ -4,7 +4,7 @@ using Tekla.Structures.Geometry3d;
 namespace Tekla.Extension
 {
     /// <summary>
-    /// Extension class for working with Vector class in Tekla Structures
+    /// Extension class for working with <see cref="Vector"/> in Tekla Structures
     /// </summary>
     public static class VectorExtension
     {
