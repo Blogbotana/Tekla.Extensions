@@ -149,6 +149,17 @@ namespace Tekla.Extension
             }
             return lineSegments;
         }
-        
+
+        public static void ComparePoints(Point thisPoint, Point pointToWrite, Func<double, double, bool> CompareMethod = null)
+        {
+            CompareMethod ??= (x,y) => Math.Max(x,y) == x;
+
+            if (CompareMethod(thisPoint.X, pointToWrite.X))
+                pointToWrite.X = thisPoint.X;
+            if (CompareMethod(thisPoint.Y, pointToWrite.Y))
+                pointToWrite.Y = thisPoint.Y;
+            if (CompareMethod(thisPoint.Z, pointToWrite.Z))
+                pointToWrite.Z = thisPoint.Z;
+        }
     }
 }

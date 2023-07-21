@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyExtension.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="LineExtension.cs" />
     <Compile Include="LinqExtension.cs" />
