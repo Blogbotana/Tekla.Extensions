@@ -65,6 +65,20 @@ using Tekla.Extension;
         }
 ```
 
+### Non case sensetive report property
+```csharp
+using TSMUI = Tekla.Structures.Model.UI;
+using Tekla.Structures.Model;
+using Tekla.Extensions;
+
+
+        var part = new TSMUI.ModelObjectSelector()
+            .GetSelectedObjects()
+            .ToIEnumerable<Part>()
+            .FirstOrDefault();
+
+        double netWeight = part.GetReportProperty<double>(" weight net ");
+```
 
 ## Licence
 
@@ -80,9 +94,10 @@ Create the ussie if you have any question or problems using the library. Our con
 
 ### Tasks to do
 - [x] Make nuget package
-- [ ] Add Assebmy and Part class
+- [x] Add Assebmy and Part class
 - [ ] Add more examples for readme file
 - [ ] Add example project
 - [ ] Make Tests 
-- [ ] Add code conventions
-- [ ] Add Github actions
+- [ ] Add Forms Dialogs
+- [ ] Add ProfileType
+- [x] Add Github actions

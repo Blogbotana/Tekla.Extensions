@@ -3,6 +3,9 @@ using Tekla.Structures.Geometry3d;
 
 namespace Tekla.Extension
 {
+    /// <summary>
+    /// Class for working with <see cref="Line"/>
+    /// </summary>
     public static class LineExtension
     {
         public static Point[] GetPoints(this Arc arc, int steps = 10)
