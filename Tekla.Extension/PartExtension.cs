@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Tekla.Structures;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
 using Tekla.Structures.Solid;
+using SR = System.Reflection;
 
 namespace Tekla.Extension
 {
@@ -55,6 +58,32 @@ namespace Tekla.Extension
         public static double GetWeight(this Part part)
         {
             return part.GetReportProperty<double>("profile weight");
+        }
+        public static Tekla.Structures.Drawing.SinglePartDrawing GetPartDrawing(this Part part)
+        {
+            int id = part.GetReportProperty<int>("DRAWING.ID");
+            if (id > 0)
+            {
+                Identifier thisIdentifier = new(id);
+                Tekla.Structures.Drawing.SinglePartDrawing singlePartDrawing = new(part.Identifier);
+                singlePartDrawing.GetType()
+                    .GetProperty("Identifier", SR.BindingFlags.Instance | SR.BindingFlags.Public | SR.BindingFlags.NonPublic)
+                    .SetValue(singlePartDrawing, thisIdentifier);
+                _ = singlePartDrawing.Select();
+            }
+            return null;
+        }
+        public static bool ArePartsBolted(this Part part1, Part part2)
+        {
+            IEnumerable<Guid> bolts1 = part1.GetBolts().ToIEnumerable<BoltGroup>().Select(b => b.Identifier.GUID);
+            IEnumerable<Guid> bolts2 = part2.GetBolts().ToIEnumerable<BoltGroup>().Select(b => b.Identifier.GUID);
+            return bolts1.Intersect(bolts2).Count() > 0;
+        }
+        public static bool ArePartWelded(this Part part1, Part part2)
+        {
+            IEnumerable<Guid> welds1 = part1.GetWelds().ToIEnumerable<BaseWeld>().Select(b => b.Identifier.GUID);
+            IEnumerable<Guid> welds2 = part2.GetWelds().ToIEnumerable<BaseWeld>().Select(b => b.Identifier.GUID);
+            return welds1.Intersect(welds2).Count() > 0;
         }
     }
 }

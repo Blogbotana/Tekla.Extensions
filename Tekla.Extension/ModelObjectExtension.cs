@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Tekla.Structures.Model;
 
@@ -55,6 +56,50 @@ namespace Tekla.Extension
         public static T GetReportProperty<T>(this ModelObject modelObject, string name)
         {
             return GetReportProperty<T>(modelObject, name, out _);
+        }
+
+        public static T GetUDAProperty<T>(this ModelObject modelObject, string name, out bool isSuccess)
+        {
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+            if (typeof(T) == typeof(string))
+            {
+                string value = string.Empty;
+                isSuccess = modelObject.GetUserProperty(name, ref value);
+                return (T)converter.ConvertTo(value, typeof(T));
+            }
+            else if (typeof(T) == typeof(int))
+            {
+                int value = int.MinValue;
+                isSuccess = modelObject.GetUserProperty(name, ref value);
+                return (T)converter.ConvertTo(value, typeof(T));
+            }
+            else if (typeof(T) == typeof(double))
+            {
+                double value = double.MinValue;
+                isSuccess = modelObject.GetUserProperty(name, ref value);
+                return (T)converter.ConvertTo(value, typeof(T));
+            }
+            else
+            {
+                isSuccess = false;
+                return default;
+            }
+        }
+
+        public static void RemoveAllUDA(this ModelObject modelObject)
+        {
+            Hashtable  hashtable = new Hashtable();
+            modelObject.GetAllUserProperties(ref hashtable);
+            foreach (DictionaryEntry item in hashtable)
+            {
+                string nameUDA = item.Key.ToString();
+                if (item.Value is string)
+                    modelObject.SetUserProperty(nameUDA, null);
+                if (item.Value is int)
+                    modelObject.SetUserProperty(nameUDA, int.MinValue);
+                if(item.Value is double)
+                    modelObject.SetUserProperty (nameUDA, -2147483648.0);
+            }
         }
     }
 }

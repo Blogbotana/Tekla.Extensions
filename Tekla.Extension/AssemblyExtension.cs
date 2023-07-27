@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SR = System.Reflection;
+using Tekla.Structures;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
 
@@ -66,6 +68,21 @@ namespace Tekla.Extension
         {
             IEnumerable<OBB> obbs = assembly.GetAllPartsOfAssembly().Select(p => p.GetPartOBB());
             return OBBExtension.CombineOBBs(obbs);
+        }
+        public static Tekla.Structures.Drawing.AssemblyDrawing GetAssemblyDrawing(this Assembly assembly)
+        {
+            int id = assembly.GetReportProperty<int>("DRAWING.ID");
+            if (id > 0)
+            {
+                Identifier thisIdentifier = new Identifier(id);
+                Tekla.Structures.Drawing.AssemblyDrawing assemblyDrawing = new Tekla.Structures.Drawing.AssemblyDrawing(assembly.Identifier);
+                assemblyDrawing.GetType()
+                    .GetProperty("Identifier", SR.BindingFlags.Instance | SR.BindingFlags.Public | SR.BindingFlags.NonPublic)
+                    .SetValue(assemblyDrawing, thisIdentifier);
+                assemblyDrawing.Select();
+                return assemblyDrawing;
+            }
+            return null;
         }
     }
 }
