@@ -6,6 +6,7 @@ using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
 using Tekla.Structures.Solid;
 using SR = System.Reflection;
+using Tekla.Extension.Services;
 
 namespace Tekla.Extension
 {
@@ -84,6 +85,15 @@ namespace Tekla.Extension
             IEnumerable<Guid> welds1 = part1.GetWelds().ToIEnumerable<BaseWeld>().Select(b => b.Identifier.GUID);
             IEnumerable<Guid> welds2 = part2.GetWelds().ToIEnumerable<BaseWeld>().Select(b => b.Identifier.GUID);
             return welds1.Intersect(welds2).Count() > 0;
+        }
+        /// <summary>
+        /// Gets profile type property and returns custom enum to work with profile type filtering.
+        /// </summary>
+        public static ProfileType GetProfileType(this Part part)
+        {
+            string profTypeStr = string.Empty;
+            part.GetReportProperty("PROFILE_TYPE", ref profTypeStr);
+            return ProfileTypeEnumConverter.GetProfileTypeFromString(profTypeStr);
         }
     }
 }
