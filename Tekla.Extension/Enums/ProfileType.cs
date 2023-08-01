@@ -70,6 +70,12 @@ namespace Tekla.Extension
         /// Z and rest shaped profiles. Corresponding API sting value is "Z".
         /// </summary>
         [Description("Z")]
-        Zbeam
+        Zbeam,
+
+        /// <summary>
+        /// Profile string is not supported. Unknown corresponding API sting value.
+        /// </summary>
+        [Description("Unknown")]
+        Unknown
     }
 }

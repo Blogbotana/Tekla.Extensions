@@ -13,7 +13,6 @@ public static class ProfileTypeEnumConverter
     /// Converts string to ProfileType.
     /// </summary>
     /// <param name="str">String value API is working with.</param>
-    /// <returns>May return -1 if the string is not supported in the ProfileType Enum</returns>
     public static ProfileType GetProfileTypeFromString(string str)
     {
         switch (str)
@@ -39,7 +38,7 @@ public static class ProfileTypeEnumConverter
             case "Z":
                 return ProfileType.Zbeam;
             default:
-                return (ProfileType)(-1);
+                return ProfileType.Unknown;
         }
     }
 
@@ -73,7 +72,7 @@ public static class ProfileTypeEnumConverter
             case ProfileType.Zbeam:
                 return "Z";
             default:
-                return "";
+                return "Unknown";
         }
     }
 }
