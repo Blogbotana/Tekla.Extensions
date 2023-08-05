@@ -95,6 +95,7 @@
     <Compile Include="AABBExtension.cs" />
     <Compile Include="AssemblyExtension.cs" />
     <Compile Include="BoltExtension.cs" />
+    <Compile Include="CoordinateSystemExtension.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="LineExtension.cs" />
     <Compile Include="LinqExtension.cs" />

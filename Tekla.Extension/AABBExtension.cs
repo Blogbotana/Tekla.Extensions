@@ -51,5 +51,21 @@ namespace Tekla.Extension
             Vector[] vectors = new Vector[] { VectorExtension.X, VectorExtension.Y, VectorExtension.Z };
             return new OBB(center, vectors, extents);
         }
+
+        public static Point[] ComputeVertices(this AABB aabb)
+        {
+            return new Point[]
+            {
+                new Point(aabb.MinPoint.X, aabb.MinPoint.Y, aabb.MinPoint.Z),
+                new Point(aabb.MinPoint.X, aabb.MaxPoint.Y, aabb.MinPoint.Z),
+                new Point(aabb.MaxPoint.X, aabb.MaxPoint.Y, aabb.MinPoint.Z),
+                new Point(aabb.MaxPoint.X, aabb.MinPoint.Y, aabb.MinPoint.Z),
+
+                new Point(aabb.MinPoint.X, aabb.MinPoint.Y, aabb.MaxPoint.Z),
+                new Point(aabb.MinPoint.X, aabb.MaxPoint.Y, aabb.MaxPoint.Z),
+                new Point(aabb.MaxPoint.X, aabb.MaxPoint.Y, aabb.MaxPoint.Z),
+                new Point(aabb.MaxPoint.X, aabb.MinPoint.Y, aabb.MaxPoint.Z),
+            };
+        }
     }
 }

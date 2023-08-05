@@ -133,13 +133,22 @@ namespace Tekla.Extension
             return new Vector(point);
         }
         /// <summary>
-        /// Check is point is null
+        /// Check if point is null
         /// </summary>
         /// <param name="point"></param>
         /// <returns>Is point is null</returns>
         public static bool IsNull(this Point point)
         {
             return point.X == double.NaN || point.Y == double.NaN || point.Z == double.NaN;
+        }
+        /// <summary>
+        /// Check if point is empty
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>Is point is null</returns>
+        public static bool IsEmpty(this Point point)
+        {
+            return point.X == 0 && point.Y == 0 && point.Z == 0;
         }
 
         /// <summary>

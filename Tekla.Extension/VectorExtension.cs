@@ -104,10 +104,15 @@ namespace Tekla.Extension
         /// <returns>Result vector</returns>
         public static Vector TransformVector(this Matrix matrix, Vector vector)
         {
-            Vector p0 = new();
-            Point p0Transformed = matrix.Transform(p0);
+            Vector point0 = new();
+            Point p0Transformed = matrix.Transform(point0);
             Point vectorPointTransformed = matrix.Transform(vector);
             return new(vectorPointTransformed - p0Transformed);
+        }
+
+        public static void Translate(this Point point, Vector vector)
+        {
+            point.Translate(vector.X, vector.Y, vector.Z);
         }
         #endregion
     }

@@ -68,5 +68,36 @@ namespace Tekla.Extension
             public double Tolerance { get; set; }
             public bool[] BoltConfiguration { get; set; }
         }
+
+        public static void SetPointsToBolt(this BoltGroup boltGroup, IEnumerable<Point> points)
+        {
+            boltGroup.FirstPosition = points.FirstOrDefault();
+            boltGroup.SecondPosition = points.LastOrDefault();
+        }
+        public static void SetStartPointDxOffset(this BoltGroup boltGroup, double distance)
+        {
+            boltGroup.StartPointOffset = new Offset() { Dx = distance, Dy = 0, Dz = 0 };
+        }
+
+        public static double GetSumDistX(this BoltArray boltArray)
+        {
+            int boltDistXCount = boltArray.GetBoltDistXCount();
+            double num = 0.0;
+            for (int i = 0; i < boltDistXCount; i++)
+            {
+                num += boltArray.GetBoltDistX(i);
+            }
+            return num;
+        }
+        public static double GetSumDistY(this BoltArray boltArray)
+        {
+            int boltDistYCount = boltArray.GetBoltDistYCount();
+            double num = 0.0;
+            for (int i = 0; i < boltDistYCount; i++)
+            {
+                num += boltArray.GetBoltDistY(i);
+            }
+            return num;
+        }
     }
 }
