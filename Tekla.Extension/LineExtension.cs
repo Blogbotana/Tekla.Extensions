@@ -23,5 +23,21 @@ namespace Tekla.Extension
             }
             return points;
         }
+        public static LineSegment[] DevideBy(this LineSegment segment, int quantity)
+        {
+            double length = Distance.PointToPoint(segment.Point1, segment.Point2) / quantity;
+            Vector stepVector = segment.GetDirectionVector() * length;
+            LineSegment[] segments = new LineSegment[quantity - 1];
+            for (int i = 0; i < quantity; i++)
+            {
+                segments[i] = new(segment.Point1 + (stepVector * i), segment.Point1 + (stepVector * (i + 1)));
+            }
+            return segments;
+        }
+
+        public static Point GetCenterPoint(this LineSegment lineSegment)
+        {
+            return lineSegment.Point1.GetCenterPoint(lineSegment.Point2);
+        }
     }
 }

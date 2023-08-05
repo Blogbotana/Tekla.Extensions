@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Tekla.Structures.Model;
@@ -100,6 +101,14 @@ namespace Tekla.Extension
                 if(item.Value is double)
                     modelObject.SetUserProperty (nameUDA, -2147483648.0);
             }
+        }
+        public static ModelObject GetObjectByGuid(this Tekla.Structures.Model.Model model, string guid)
+        {
+            return model.SelectModelObject(model.GetIdentifierByGUID(guid));
+        }
+        public static ModelObject GetObjectByGuid(this Tekla.Structures.Model.Model model, Guid guid)
+        {
+            return model.SelectModelObject(model.GetIdentifierByGUID(guid.ToString()));
         }
     }
 }

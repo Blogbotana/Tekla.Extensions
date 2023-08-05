@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using SR = System.Reflection;
 using Tekla.Structures;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
+using SR = System.Reflection;
 
 namespace Tekla.Extension
 {
@@ -83,6 +84,31 @@ namespace Tekla.Extension
                 return assemblyDrawing;
             }
             return null;
+        }
+
+        public static ICollection<Assembly> FindAssembliesAround(this Assembly assembly, Model model = null)
+        {
+            model ??= new Model();
+
+            OBB obb = assembly.GetOBB();
+
+            var parts = model.GetModelObjectSelector()
+                .GetObjectsByBoundingBox(obb.GetMinimumPoint(), obb.GetMaximumPoint())
+                .ToIEnumerable<Part>();
+
+            Dictionary<Guid, Assembly> neighbourAssemblies = new();
+            foreach (var part in parts)
+            {
+                Assembly thisAssembly = part.GetAssembly();
+
+                if (thisAssembly.Identifier == assembly.Identifier)
+                    continue;
+
+                if (!neighbourAssemblies.ContainsKey(thisAssembly.Identifier.GUID))
+                    neighbourAssemblies.Add(thisAssembly.Identifier.GUID, thisAssembly);
+            }
+
+            return neighbourAssemblies.Values;
         }
     }
 }

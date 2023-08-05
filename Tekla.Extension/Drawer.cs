@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tekla.Structures.Geometry3d;
+using Tekla.Structures.Model;
 using Tekla.Structures.Model.UI;
 
 namespace Tekla.Extension
@@ -297,6 +298,111 @@ namespace Tekla.Extension
             _ = graphicsDrawer.DrawMeshLines(mesh, Black);
         }
         #endregion
-        //TODO Add Draw OBB, AABB
+        #region OBB and AABB
+        public static void DrawObb(this OBB obb, Color color = null, bool drawPoints = false)
+        {
+            color ??= Black;
+            Point[] array = obb.ComputeVertices();
+            DrawBox(array, color, drawPoints);
+        }
+        public static void DrawAABB(this AABB aabb, Color color, bool drawPoints = false)
+        {
+            color ??= Black;
+            Point[] array = aabb.ComputeVertices();
+            DrawBox(array, color, drawPoints);
+        }
+        private static void DrawBox(Point[] array, Color color, bool drawPoints)
+        {
+            Point[] bottomPoints = new Point[]
+               {
+                    array[0],
+                    array[1],
+                    array[2],
+                    array[3],
+               };
+
+            Point[] upperPoints = new Point[]
+              {
+                    array[4],
+                    array[5],
+                    array[6],
+                    array[7],
+              };
+
+            var bottomLines = bottomPoints.GetLineSegmentsOfPolygon();
+            var upperLines = upperPoints.GetLineSegmentsOfPolygon();
+
+            bottomLines.DrawPolygon(color);
+            upperLines.DrawPolygon(color);
+            LineSegment[] sideLines = new LineSegment[]
+            {
+                new LineSegment(array[0], array[4]),
+                new LineSegment(array[1], array[5]),
+                new LineSegment(array[2], array[6]),
+                new LineSegment(array[3], array[7]),
+            };
+
+            sideLines.DrawPolygon(color);
+
+            if (drawPoints)
+                DrawPoints(array);
+        }
+        #endregion
+        #region Plane
+        public static void DrawPlane(this Plane plane, double length = 100, Color color = null)
+        {
+            color ??= Blue;
+
+            Vector vectorX = new(plane.AxisX);
+            Vector vectorY = new(plane.AxisY);
+            _ = vectorX.Normalize(length * 0.5);
+            _ = vectorY.Normalize(length * 0.5);
+            Point[] points = new Point[]
+            {
+                plane.Origin + vectorX + vectorY,
+                plane.Origin + vectorX - vectorY,
+                plane.Origin - vectorX - vectorY,
+                plane.Origin - vectorX + vectorY
+            };
+            DrawSquareMesh(points, color);
+        }
+        public static void DrawGeometricPlane(this GeometricPlane geometricPlane, double length = 100, Color color = null)
+        {
+            color ??= Blue;
+            var crossedVector1 = geometricPlane.Normal.Cross(VectorExtension.Z);
+            if(crossedVector1.IsNull() || crossedVector1.IsEmpty())
+                crossedVector1 = geometricPlane.Normal.Cross(VectorExtension.Y);
+
+            var crossedVector2 = geometricPlane.Normal.Cross(crossedVector1);
+
+            crossedVector1.Normalize(length * 0.5);
+            crossedVector2.Normalize(length * 0.5);
+
+            Point[] points = new Point[]
+            {
+                geometricPlane.Origin + crossedVector1 + crossedVector2,
+                geometricPlane.Origin + crossedVector1 - crossedVector2,
+                geometricPlane.Origin - crossedVector1 - crossedVector2,
+                geometricPlane.Origin - crossedVector1 + crossedVector2
+            };
+            DrawSquareMesh(points, color);
+        }
+        private static void DrawSquareMesh(Point[] points, Color color)
+        {
+            if (points.Length != 4)
+                return;
+            Mesh mesh = new();
+            mesh.AddPoint(points[0]);
+            mesh.AddPoint(points[1]);
+            mesh.AddPoint(points[2]);
+            mesh.AddPoint(points[3]);
+            mesh.AddTriangle(0, 1, 2);
+            mesh.AddTriangle(2, 1, 0);
+            mesh.AddTriangle(0, 2, 3);
+            mesh.AddTriangle(3, 2, 0);
+
+            graphicsDrawer.DrawMeshSurface(mesh, color);
+        }
+        #endregion
     }
 }
