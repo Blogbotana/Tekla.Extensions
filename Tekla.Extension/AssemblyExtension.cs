@@ -75,12 +75,12 @@ namespace Tekla.Extension
             int id = assembly.GetReportProperty<int>("DRAWING.ID");
             if (id > 0)
             {
-                Identifier thisIdentifier = new Identifier(id);
-                Tekla.Structures.Drawing.AssemblyDrawing assemblyDrawing = new Tekla.Structures.Drawing.AssemblyDrawing(assembly.Identifier);
+                Identifier thisIdentifier = new(id);
+                Tekla.Structures.Drawing.AssemblyDrawing assemblyDrawing = new(assembly.Identifier);
                 assemblyDrawing.GetType()
                     .GetProperty("Identifier", SR.BindingFlags.Instance | SR.BindingFlags.Public | SR.BindingFlags.NonPublic)
                     .SetValue(assemblyDrawing, thisIdentifier);
-                assemblyDrawing.Select();
+                _ = assemblyDrawing.Select();
                 return assemblyDrawing;
             }
             return null;
@@ -92,20 +92,24 @@ namespace Tekla.Extension
 
             OBB obb = assembly.GetOBB();
 
-            var parts = model.GetModelObjectSelector()
+            IEnumerable<Part> parts = model.GetModelObjectSelector()
                 .GetObjectsByBoundingBox(obb.GetMinimumPoint(), obb.GetMaximumPoint())
                 .ToIEnumerable<Part>();
 
             Dictionary<Guid, Assembly> neighbourAssemblies = new();
-            foreach (var part in parts)
+            foreach (Part part in parts)
             {
                 Assembly thisAssembly = part.GetAssembly();
 
                 if (thisAssembly.Identifier == assembly.Identifier)
+                {
                     continue;
+                }
 
                 if (!neighbourAssemblies.ContainsKey(thisAssembly.Identifier.GUID))
+                {
                     neighbourAssemblies.Add(thisAssembly.Identifier.GUID, thisAssembly);
+                }
             }
 
             return neighbourAssemblies.Values;
