@@ -4,6 +4,9 @@ using TSMUI = Tekla.Structures.Model.UI;
 
 namespace Tekla.Extension
 {
+    /// <summary>
+    /// Class for working with <see cref="AABB"/> in Tekla Structures
+    /// </summary>
     public static class AABBExtension
     {
         public static void Zoom(this AABB aabb)
@@ -36,9 +39,9 @@ namespace Tekla.Extension
         public static OBB ToOBB(this AABB aabb)
         {
             Point center = aabb.MinPoint.GetCenterPoint(aabb.MaxPoint);
-            Line lineX = new Line(center, VectorExtension.X);
-            Line lineY = new Line(center, VectorExtension.Y);
-            Line lineZ = new Line(center, VectorExtension.Z);
+            Line lineX = new(center, VectorExtension.X);
+            Line lineY = new(center, VectorExtension.Y);
+            Line lineZ = new(center, VectorExtension.Z);
 
             Point pointX = Projection.PointToLine(aabb.MaxPoint, lineX);
             Point pointY = Projection.PointToLine(aabb.MaxPoint, lineY);

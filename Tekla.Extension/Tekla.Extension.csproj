@@ -126,6 +126,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ProfileTypeEnumConverter.cs" />
     <Compile Include="SolidExtension.cs" />
+    <Compile Include="UI\PickerModelExtension.cs" />
     <Compile Include="VectorExtension.cs" />
   </ItemGroup>
   <ItemGroup />
