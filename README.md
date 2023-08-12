@@ -99,5 +99,5 @@ Create the ussie if you have any question or problems using the library. Our con
 - [ ] Add example project
 - [ ] Make Tests 
 - [ ] Add Forms Dialogs
-- [ ] Add ProfileType
-- [x] Add Github actions
+- [ ] Add Intersections
+- [ ] Add Geometry core 3d

@@ -114,6 +114,10 @@ namespace Tekla.Extension
         {
             point.Translate(vector.X, vector.Y, vector.Z);
         }
+        public static double GetLengthSquared(this Vector vector)
+        {
+            return vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z;
+        }
         #endregion
     }
 }

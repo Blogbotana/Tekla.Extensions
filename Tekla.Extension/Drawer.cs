@@ -60,35 +60,20 @@ namespace Tekla.Extension
         /// <param name="point1">First point</param>
         /// <param name="point2">Second point</param>
         /// <param name="color"></param>
-        public static void DrawLine(Point point1, Point point2, Color color)
+        public static void DrawLine(Point point1, Point point2, Color color = null)
         {
+            color ??= Black;
             _ = graphicsDrawer.DrawLineSegment(point1, point2, color);
-        }
-        /// <summary>
-        /// Draws the line by two points
-        /// </summary>
-        /// <param name="point1">First point</param>
-        /// <param name="point2">Second point</param>
-        public static void DrawLine(Point point1, Point point2)
-        {
-            DrawLine(point1, point2, Black);
         }
         /// <summary>
         /// Draws the line by line segment
         /// </summary>
         /// <param name="segment">Line segment to be drawn</param>
         /// <param name="color"></param>
-        public static void DrawLine(this LineSegment segment, Color color)
+        public static void DrawLine(this LineSegment segment, Color color = null)
         {
+            color ??= Black;
             DrawLine(segment.Point1, segment.Point2, color);
-        }
-        /// <summary>
-        /// Draws the line by line segment
-        /// </summary>
-        /// <param name="segment"></param>
-        public static void DrawLine(this LineSegment segment)
-        {
-            DrawLine(segment.Point1, segment.Point2, Black);
         }
         /// <summary>
         /// Draw the line
@@ -96,22 +81,15 @@ namespace Tekla.Extension
         /// <param name="line">The line to be drawn</param>
         /// <param name="color">The color of the line</param>
         /// <param name="offset">Offset from origin point</param>
-        public static void DrawLine(this Line line, Color color, double offset = 1000.0)
+        public static void DrawLine(this Line line, Color color = null, double offset = 1000.0)
         {
+            color ??= Black;
+
             Vector vector = line.Direction.GetNormal();
             _ = vector.Normalize(offset);
             Point point1 = new(line.Origin + vector);
             Point point2 = new(line.Origin - vector);
             DrawLine(point1, point2, color);
-        }
-        /// <summary>
-        /// Draw the line
-        /// </summary>
-        /// <param name="line">The line to be drawn</param>
-        /// <param name="offset">Offset from origin point</param>
-        public static void DrawLine(this Line line, double offset = 1000.0)
-        {
-            DrawLine(line, Black, offset);
         }
         #endregion
         #region Point Methods
@@ -121,18 +99,10 @@ namespace Tekla.Extension
         /// <param name="point">The point to be drawn</param>
         /// <param name="text">The text for point</param>
         /// <param name="textColor">The color of text</param>
-        public static void DrawPoint(this Point point, string text, Color textColor)
+        public static void DrawPoint(this Point point, string text, Color textColor = null)
         {
+            textColor ??= Blue;
             _ = graphicsDrawer.DrawText(point, text ?? "p", textColor);
-        }
-        /// <summary>
-        /// Draws the point in model
-        /// </summary>
-        /// <param name="point">The point to be drawn</param>
-        /// <param name="text">The text for point</param>
-        public static void DrawPoint(this Point point, string text)
-        {
-            DrawPoint(point, text, Blue);
         }
         /// <summary>
         /// Draws the point in model
@@ -147,8 +117,10 @@ namespace Tekla.Extension
         /// </summary>
         /// <param name="points">The collection of points</param>
         /// <param name="color">The color of points</param>
-        public static void DrawPoints(this IEnumerable<Point> points, Color color)
+        public static void DrawPoints(this IEnumerable<Point> points, Color color = null)
         {
+            color ??= DarkBlue;
+
             int counter = 0;
             foreach (Point point in points)
             {
@@ -156,14 +128,7 @@ namespace Tekla.Extension
                 counter++;
             }
         }
-        /// <summary>
-        /// Draws the points of array
-        /// </summary>
-        /// <param name="points">The collection of points</param>
-        public static void DrawPoints(this IEnumerable<Point> points)
-        {
-            DrawPoints(points, Blue);
-        }
+
         #endregion
         #region Arrow Methods
         public static void DrawCross(this Point point, Color colorOfCross = null, double length = 100)
@@ -182,8 +147,10 @@ namespace Tekla.Extension
             DrawLine(point3, point4, colorOfCross);
         }
 
-        public static void DrawArrow(Point point1, Point point2, Color color, double xSize = 100, double ySize = 100)
+        public static void DrawArrow(Point point1, Point point2, Color color = null, double xSize = 100, double ySize = 100)
         {
+            color ??= Red;
+
             Vector vectorArrow = new(point2 - point1);
             Vector vectorNormal = VectorExtension.Z;
             Vector vectorY = vectorNormal.Cross(vectorArrow);
@@ -305,7 +272,7 @@ namespace Tekla.Extension
             Point[] array = obb.ComputeVertices();
             DrawBox(array, color, drawPoints);
         }
-        public static void DrawAABB(this AABB aabb, Color color, bool drawPoints = false)
+        public static void DrawAABB(this AABB aabb, Color color = null, bool drawPoints = false)
         {
             color ??= Black;
             Point[] array = aabb.ComputeVertices();

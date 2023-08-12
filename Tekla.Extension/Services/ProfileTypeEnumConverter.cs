@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tekla.Extension.Enums;
 
 namespace Tekla.Extension.Services;
 
@@ -15,31 +11,20 @@ public static class ProfileTypeEnumConverter
     /// <param name="str">String value API is working with.</param>
     public static ProfileType GetProfileTypeFromString(string str)
     {
-        switch (str)
+        return str switch
         {
-            case "B":
-                return ProfileType.Plate;
-            case "I":
-                return ProfileType.Ibeam;
-            case "L":
-                return ProfileType.Angle;
-            case "U":
-                return ProfileType.Channel;
-            case "RU":
-                return ProfileType.RoundBar;
-            case "RO":
-                return ProfileType.RoundTube;
-            case "M":
-                return ProfileType.RectangularTube;
-            case "C":
-                return ProfileType.CFChannel;
-            case "T":
-                return ProfileType.Tbeam;
-            case "Z":
-                return ProfileType.Zbeam;
-            default:
-                return ProfileType.Unknown;
-        }
+            "B" => ProfileType.Plate,
+            "I" => ProfileType.Ibeam,
+            "L" => ProfileType.Angle,
+            "U" => ProfileType.Channel,
+            "RU" => ProfileType.RoundBar,
+            "RO" => ProfileType.RoundTube,
+            "M" => ProfileType.RectangularTube,
+            "C" => ProfileType.CFChannel,
+            "T" => ProfileType.Tbeam,
+            "Z" => ProfileType.Zbeam,
+            _ => ProfileType.Unknown,
+        };
     }
 
     /// <summary>
@@ -49,30 +34,19 @@ public static class ProfileTypeEnumConverter
     /// <returns>String corresponding to Enum</returns>
     public static string GetStringValueFromProfileType(ProfileType profileType)
     {
-        switch (profileType)
+        return profileType switch
         {
-            case ProfileType.Plate:
-                return "B";
-            case ProfileType.Ibeam:
-                return "I";
-            case ProfileType.Angle:
-                return "L";
-            case ProfileType.Channel:
-                return "U";
-            case ProfileType.RoundBar:
-                return "RU";
-            case ProfileType.RoundTube:
-                return "RO";
-            case ProfileType.RectangularTube:
-                return "M";
-            case ProfileType.CFChannel:
-                return "C";
-            case ProfileType.Tbeam:
-                return "T";
-            case ProfileType.Zbeam:
-                return "Z";
-            default:
-                return "Unknown";
-        }
+            ProfileType.Plate => "B",
+            ProfileType.Ibeam => "I",
+            ProfileType.Angle => "L",
+            ProfileType.Channel => "U",
+            ProfileType.RoundBar => "RU",
+            ProfileType.RoundTube => "RO",
+            ProfileType.RectangularTube => "M",
+            ProfileType.CFChannel => "C",
+            ProfileType.Tbeam => "T",
+            ProfileType.Zbeam => "Z",
+            _ => "Unknown",
+        };
     }
 }

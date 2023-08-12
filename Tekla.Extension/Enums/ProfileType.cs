@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tekla.Extension
+namespace Tekla.Extension.Enums
 {
     /// <summary>
     /// Enum for storing PROFILE_TYPE values as per https://support.tekla.com/doc/tekla-structures/2023/profile_type.

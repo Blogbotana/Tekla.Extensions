@@ -34,7 +34,7 @@ namespace Tekla.Extension
             return new AABB(min, max);
         }
 
-        public static ICollection<Part> GetAllPartsOfAssembly(this Assembly assembly, bool isIncludeSubAssemblies = false)
+        public static IReadOnlyCollection<Part> GetAllPartsOfAssembly(this Assembly assembly, bool isIncludeSubAssemblies = false)
         {
             ICollection<Assembly> subAssemblies = isIncludeSubAssemblies ? GetSubAssemblies(assembly) : (new Assembly[] { assembly });
             List<Part> parts = new();
@@ -86,7 +86,7 @@ namespace Tekla.Extension
             return null;
         }
 
-        public static ICollection<Assembly> FindAssembliesAround(this Assembly assembly, Model model = null)
+        public static IReadOnlyCollection<Assembly> FindAssembliesAround(this Assembly assembly, Model model = null)
         {
             model ??= new Model();
 

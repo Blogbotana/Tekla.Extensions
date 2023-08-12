@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Tekla.Extension.Enums;
+using Tekla.Extension.Services;
 using Tekla.Structures;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
 using Tekla.Structures.Solid;
 using SR = System.Reflection;
-using Tekla.Extension.Services;
 
 namespace Tekla.Extension
 {
@@ -60,6 +62,14 @@ namespace Tekla.Extension
         {
             return part.GetReportProperty<double>("profile weight");
         }
+        public static double GetHeight(this ModelObject part)
+        {
+            return part.GetReportProperty<double>("HEIGHT");
+        }
+        public static double GetLength(this ModelObject part)
+        {
+            return part.GetReportProperty<double>("LENGTH");
+        }
         public static Tekla.Structures.Drawing.SinglePartDrawing GetPartDrawing(this Part part)
         {
             int id = part.GetReportProperty<int>("DRAWING.ID");
@@ -91,9 +101,33 @@ namespace Tekla.Extension
         /// </summary>
         public static ProfileType GetProfileType(this Part part)
         {
-            string profTypeStr = string.Empty;
-            part.GetReportProperty("PROFILE_TYPE", ref profTypeStr);
+            string profTypeStr = GetProfileTypeString(part);
             return ProfileTypeEnumConverter.GetProfileTypeFromString(profTypeStr);
+        }
+        public static string GetProfileTypeString(this ModelObject part)
+        {
+            return part.GetReportProperty<string>("PROFILE_TYPE");
+        }
+        public static Point GetStartPoint(this Part part)
+        {
+            double x = part.GetReportProperty<double>("START_X");
+            double y = part.GetReportProperty<double>("START_Y");
+            double z = part.GetReportProperty<double>("START_Z");
+            return new Point(x, y, z);
+        }
+        public static Point GetEndPoint(this Part part)
+        {
+            double x = part.GetReportProperty<double>("END_X");
+            double y = part.GetReportProperty<double>("END_Y");
+            double z = part.GetReportProperty<double>("END_Z");
+            return new Point(x, y, z);
+        }
+        public static LineSegment GetCenterLineSegment(this Part part, bool withCutsFittings = true)
+        {
+            ArrayList centerLine = part.GetCenterLine(withCutsFittings);
+            Point point1 = centerLine[0] as Point;
+            Point point2 = centerLine[1] as Point;
+            return new LineSegment(point1, point2);
         }
     }
 }
