@@ -26,6 +26,21 @@ namespace Tekla.Extension
         {
             return boltGroup.BoltPositions.Cast<Point>().ToArray();
         }
+        public static void SetAllPartToBolt(this BoltGroup boltGroup, IEnumerable<Part> parts)
+        {
+            int i = 0;
+            foreach (Part part in parts)
+            {
+                if (i == 0 && part is not null)
+                    boltGroup.PartToBeBolted = part;
+                else if (i == 1 && part is not null)
+                    boltGroup.PartToBoltTo = part;
+                else if (part is not null)
+                    boltGroup.OtherPartsToBolt.Add(part);
+
+                i++;
+            }
+        }
         public static void FillFullInfoToBoltGroup(this BoltGroup boltGroup, BoltSettings boltSettings, Part partToBeBolted, Part partToBoltTo = null, IEnumerable<Part> otherParts = null)
         {
             boltGroup.PartToBeBolted = partToBoltTo;
