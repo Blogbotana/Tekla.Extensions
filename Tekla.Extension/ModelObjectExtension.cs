@@ -110,5 +110,55 @@ namespace Tekla.Extension
         {
             return model.SelectModelObject(model.GetIdentifierByGUID(guid.ToString()));
         }
+
+        public static bool IsConnectionObject(this ModelObject obj)
+        {
+            bool result = false;
+            switch (obj.GetType().Name)
+            {
+                case "RebarSplice":
+                case "Component":
+                case "Connection":
+                case "Detail":
+                case "Seam":
+                case "CustomPart":
+                    result = true;
+                    break;
+            }
+            return result;
+        }
+        public static bool IsAssociativeObject(this ModelObject obj)
+        {
+            bool result = false;
+            switch (obj.GetType().Name)
+            {
+                case "BoltArray":
+                case "BoltCircle":
+                case "BoltXYList":
+                case "BooleanPart":
+                case "CutPlane":
+                case "EdgeChamfer":
+                case "Fitting":
+                case "CircleRebar":
+                case "CircleRebarGroup":
+                case "RebarGroup":
+                case "RebarMesh":
+                case "RebarStrand":
+                case "SingleRebar":
+                case "CurvedRebarGroup":
+                case "LoadArea":
+                case "LoadGroup":
+                case "LoadLine":
+                case "LoadPoint":
+                case "LoadUniform":
+                case "SurfaceTreatment":
+                case "LogicalWeld":
+                case "PolygonWeld":
+                case "Weld":
+                    result = true;
+                    break;
+            }
+            return result;
+        }
     }
 }
