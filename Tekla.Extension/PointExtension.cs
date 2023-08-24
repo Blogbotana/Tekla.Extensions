@@ -157,7 +157,7 @@ namespace Tekla.Extension
         /// <param name="points">Points resresenting polygon</param>
         /// <param name="isClosed">Is polygon closed</param>
         /// <returns></returns>
-        public static ICollection<LineSegment> GetLineSegmentsOfPolygon(this IEnumerable<Point> points, bool isClosed = true)
+        public static IReadOnlyCollection<LineSegment> GetLineSegmentsOfPolygon(this IEnumerable<Point> points, bool isClosed = true)
         {
             LineSegment[] lineSegments = new LineSegment[isClosed ? points.Count() : points.Count() - 1];
 
@@ -194,6 +194,26 @@ namespace Tekla.Extension
             }
 
             return new AABB(min, max);
+        }
+
+        public static Point RoundTo(this Point point, int num)
+        {
+            point.X = Math.Round(point.X / num, 0) * num;
+            point.Y = Math.Round(point.Y / num, 0) * num;
+            point.Z = Math.Round(point.Z / num, 0) * num;
+            return point;
+        }
+        public static Point ResetX(this Point point, double value)
+        {
+            return new Point(value, point.Y, point.Z);
+        }
+        public static Point ResetY(this Point point, double value)
+        {
+            return new Point(point.X, value, point.Z);
+        }
+        public static Point ResetZ(this Point point, double value)
+        {
+            return new Point(point.X, point.Y, value);
         }
     }
 }

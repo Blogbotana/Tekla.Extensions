@@ -11,7 +11,7 @@ namespace Tekla.Extension.UI
     /// </summary>
     public static class PickerModelExtension
     {
-        public static IEnumerable<T> PickParts<T>(this Picker picker, Picker.PickObjectsEnum _enum, string prompt = "") where T : ModelObject
+        public static IEnumerable<T> PickObjects<T>(this Picker picker, Picker.PickObjectsEnum _enum, string prompt = "") where T : ModelObject
         {
             return picker.PickObjects(_enum, prompt).ToIEnumerable<T>();
         }

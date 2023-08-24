@@ -10,7 +10,7 @@ namespace Tekla.Extension
     /// </summary>
     public static class BoltExtension
     {
-        public static ICollection<Part> GetAllParts(this BoltGroup boltGroup)
+        public static IReadOnlyCollection<Part> GetAllParts(this BoltGroup boltGroup)
         {
             List<Part> parts = new List<Part>();
             if (boltGroup.PartToBoltTo is not null)
@@ -22,21 +22,39 @@ namespace Tekla.Extension
             return parts;
         }
 
-        public static ICollection<Point> GetBoltPoints(this BoltGroup boltGroup)
+        public static IReadOnlyCollection<Point> GetBoltPoints(this BoltGroup boltGroup)
         {
             return boltGroup.BoltPositions.Cast<Point>().ToArray();
         }
-        public static void FillFullInfoToBoltGroup(this BoltGroup boltGroup, BoltSettings boltSettings, Part partToBoltTo, Part PartToBeBolted = null, IEnumerable<Part> otherParts = null)
+        public static void SetAllPartToBolt(this BoltGroup boltGroup, IEnumerable<Part> parts)
         {
-            boltGroup.PartToBoltTo = partToBoltTo;
-            if (PartToBeBolted is not null)
-                boltGroup.PartToBeBolted = partToBoltTo;
-            if(otherParts is not null)
+            int i = 0;
+            foreach (Part part in parts)
+            {
+                if (i == 0 && part is not null)
+                    boltGroup.PartToBeBolted = part;
+                else if (i == 1 && part is not null)
+                    boltGroup.PartToBoltTo = part;
+                else if (part is not null)
+                    boltGroup.OtherPartsToBolt.Add(part);
+
+                i++;
+            }
+        }
+        public static void FillFullInfoToBoltGroup(this BoltGroup boltGroup, BoltSettings boltSettings, Part partToBeBolted, Part partToBoltTo = null, IEnumerable<Part> otherParts = null)
+        {
+            boltGroup.PartToBeBolted = partToBoltTo;
+            if (partToBeBolted is not null)
+                boltGroup.PartToBoltTo = partToBoltTo;
+            if (otherParts is not null)
             {
                 foreach (Part part in otherParts)
-                    if(part is not null)
+                    if (part is not null)
                         boltGroup.AddOtherPartToBolt(part);
             }
+
+            if (boltSettings is null)
+                return;
 
             boltGroup.BoltStandard = boltSettings.BoltStandard;
             boltGroup.BoltSize = boltSettings.BoltSize;
@@ -46,7 +64,7 @@ namespace Tekla.Extension
             boltGroup.Tolerance = boltSettings.Tolerance;
             boltGroup.ExtraLength = boltSettings.ExtraLength;
 
-            if(boltSettings.BoltConfiguration.Length == 6)
+            if (boltSettings.BoltConfiguration.Length == 6)
             {
                 boltGroup.Bolt = boltSettings.BoltConfiguration[0];
                 boltGroup.Nut1 = boltSettings.BoltConfiguration[1];
@@ -69,7 +87,7 @@ namespace Tekla.Extension
             public bool[] BoltConfiguration { get; set; }
         }
 
-        public static void SetPointsToBolt(this BoltGroup boltGroup, IEnumerable<Point> points)
+        public static void SetPointsPositionToBolt(this BoltGroup boltGroup, IEnumerable<Point> points)
         {
             boltGroup.FirstPosition = points.FirstOrDefault();
             boltGroup.SecondPosition = points.LastOrDefault();

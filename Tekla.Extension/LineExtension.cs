@@ -39,5 +39,10 @@ namespace Tekla.Extension
         {
             return lineSegment.Point1.GetCenterPoint(lineSegment.Point2);
         }
+
+        public static Line ToLine(this LineSegment lineSegment)
+        {
+            return new Line(lineSegment);
+        }
     }
 }
