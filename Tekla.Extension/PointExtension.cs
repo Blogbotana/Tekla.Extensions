@@ -184,13 +184,13 @@ namespace Tekla.Extension
         }
         public static AABB GetPolygonAABB(IEnumerable<Point> points)
         {
-            Point min = MinPoint;
-            Point max = MaxPoint;
+            Point min = MaxPoint;
+            Point max = MinPoint;
 
             foreach (Point item in points)
             {
-                ComparePoints(item, min, (x, y) => x > y);
-                ComparePoints(item, max, (x, y) => x < y);
+                ComparePoints(item, max, (x, y) => x > y);
+                ComparePoints(item, min, (x, y) => x < y);
             }
 
             return new AABB(min, max);
