@@ -119,6 +119,7 @@
     <Compile Include="DistanceExtension.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="Enums\ProfileType.cs" />
+    <Compile Include="FileExtension.cs" />
     <Compile Include="GeometryExtension.cs" />
     <Compile Include="Intersections.cs" />
     <Compile Include="LineExtension.cs" />
