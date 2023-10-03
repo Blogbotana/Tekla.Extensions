@@ -33,4 +33,8 @@ public static class BeamExtension
     {
         return new Vector(beam.EndPoint - beam.StartPoint);
     }
+    public static double GetBeamLength(this Beam beam)
+    {
+        return Distance.PointToPoint(beam.StartPoint, beam.EndPoint);
+    }
 }
