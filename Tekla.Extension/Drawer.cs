@@ -36,6 +36,7 @@ namespace Tekla.Extension
         /// Green color
         /// </summary>
         public static Color Green => new(0.0, 1.0, 0.0);
+        public static Color DarkGreen => new(0.0, 0.5, 0.0);
         /// <summary>
         /// Purple color
         /// </summary>

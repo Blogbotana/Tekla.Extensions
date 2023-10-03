@@ -203,6 +203,20 @@ namespace Tekla.Extension
             point.Z = Math.Round(point.Z / num, 0) * num;
             return point;
         }
+        public static Point CeilingTo(this Point point, int num)
+        {
+            point.X = Math.Ceiling(point.X / num) * num;
+            point.Y = Math.Ceiling(point.Y / num) * num;
+            point.Z = Math.Ceiling(point.Z / num) * num;
+            return point;
+        }
+        public static Point FloorTo(this Point point, int num)
+        {
+            point.X = Math.Floor(point.X / num) * num;
+            point.Y = Math.Floor(point.Y / num) * num;
+            point.Z = Math.Floor(point.Z / num) * num;
+            return point;
+        }
         public static Point ResetX(this Point point, double value)
         {
             return new Point(value, point.Y, point.Z);

@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\bin\x64\Debug\</OutputPath>
     <DocumentationFile>bin\Debug\Tekla.Extension.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -119,6 +119,7 @@
     <Compile Include="DistanceExtension.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="Enums\ProfileType.cs" />
+    <Compile Include="FileExtension.cs" />
     <Compile Include="GeometryExtension.cs" />
     <Compile Include="Intersections.cs" />
     <Compile Include="LineExtension.cs" />
