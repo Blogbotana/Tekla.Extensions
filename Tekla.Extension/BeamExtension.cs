@@ -20,6 +20,8 @@ public static class BeamExtension
     public static LineSegment GetCenterLineSegment(this Beam beam, bool withCutsFittings = true)
     {
         ArrayList centerLine = beam.GetCenterLine(withCutsFittings);
+        if (centerLine.Count == 0)
+            return new LineSegment();
         Point point1 = centerLine[0] as Point;
         Point point2 = centerLine[1] as Point;
         return new LineSegment(point1, point2);
