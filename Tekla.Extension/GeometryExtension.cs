@@ -20,7 +20,7 @@ public static class GeometryExtension
         Vector lineVector = new Vector(endPoint - startPoint);
         Vector testPointVector = new Vector(testPoint - startPoint);
 
-        double dotProduct = lineVector.Dot(testPointVector);
+        double dotProduct = Math.Round(lineVector.Dot(testPointVector), 2);
         double magnitude = lineVector.GetLengthSquared();
 
         if (dotProduct < 0 || dotProduct > magnitude)
