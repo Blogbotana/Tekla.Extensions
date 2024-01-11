@@ -82,7 +82,7 @@ using Tekla.Extensions;
 
 ## Licence
 
-The Tekla.Extensions library is made available under  [The 2-Clause BSD License](LICENCE.md).
+The Tekla.Extensions library is made available under  [The 2-Clause BSD License](LICENSE.md).
 
 ## Third Party Licences
 The Tekla.Extensions library makes use of the 3rd party software package, under his associated licences
