@@ -27,7 +27,7 @@ namespace Tekla.Extension
         {
             double length = Distance.PointToPoint(segment.Point1, segment.Point2) / quantity;
             Vector stepVector = segment.GetDirectionVector() * length;
-            LineSegment[] segments = new LineSegment[quantity - 1];
+            LineSegment[] segments = new LineSegment[quantity];
             for (int i = 0; i < quantity; i++)
             {
                 segments[i] = new(segment.Point1 + (stepVector * i), segment.Point1 + (stepVector * (i + 1)));
