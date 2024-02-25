@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Tekla.Structures;
 using Tekla.Structures.Model;
 
@@ -46,14 +42,14 @@ namespace Tekla.Extension
             string[] paths = currentPaths.Split(';');
             foreach (string path in paths)
             {
-                if (Directory.Exists(path))
+                if (!Directory.Exists(path))
+                    continue;
+
+                string[] filesPath = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
+                foreach (string file in filesPath)
                 {
-                    string[] filesPath = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
-                    foreach (string file in filesPath)
-                    {
-                        string fileName = Path.GetFileNameWithoutExtension(file);
-                        hashSet.Add(fileName);
-                    }
+                    string fileName = Path.GetFileNameWithoutExtension(file);
+                    hashSet.Add(fileName);
                 }
             }
         }
