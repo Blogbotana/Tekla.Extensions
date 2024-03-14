@@ -25,7 +25,7 @@ public static class ComponentHelper
 
         foreach (ModelObject child in component.GetChildren().ToIEnumerable<ModelObject>())
         {
-            if (child is not null && (child.IsConnectionObject() || child.IsAssociativeObject()))
+            if (child is not null /*&& (child.IsConnectionObject() || child.IsAssociativeObject())*/)
             {
                 _ = child.Delete();
             }
