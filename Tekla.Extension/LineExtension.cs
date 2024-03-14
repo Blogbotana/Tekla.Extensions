@@ -16,7 +16,7 @@ namespace Tekla.Extension
             for (int i = 0; i <= steps; i++)
             {
                 angleRadians = i * stepDegree;
-                points[i] = RotatePointAroundAxis(arc.StartDirection, arc.CenterPoint, arc.Normal, angleRadians);
+                points[i] = RotatePointAroundAxis(new Vector(arc.StartPoint - arc.CenterPoint), arc.CenterPoint, arc.Normal, angleRadians);
             }
             return points;
         }
