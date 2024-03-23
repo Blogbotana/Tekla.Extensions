@@ -119,6 +119,7 @@
     <Compile Include="ComponentHelper.cs" />
     <Compile Include="CoordinateSystemExtension.cs" />
     <Compile Include="DeveloperExtension.cs" />
+    <Compile Include="CuttingHelper.cs" />
     <Compile Include="DistanceExtension.cs" />
     <Compile Include="Drawer.cs" />
     <Compile Include="Enums\ProfileType.cs" />

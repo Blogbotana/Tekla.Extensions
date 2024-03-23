@@ -59,4 +59,21 @@ public static class ProfileExtension
             return parametricProfileItem.Select();
         }
     }
+    /// <summary>
+    /// Get width of plate without inserting in tekla. PL10 will return 10.
+    /// </summary>
+    /// <param name="profile"></param>
+    /// <returns>Width of profile</returns>
+    public static double GetPlateWidthByProfile(string profile)
+    {
+        ParametricProfileItem parametric = new();
+        parametric.ProfilePrefix = profile;
+        parametric.Select();
+
+        foreach (ProfileItemParameter item in parametric.aProfileItemParameters)
+        {
+            return item.Value;
+        }
+        return 0;
+    }
 }
