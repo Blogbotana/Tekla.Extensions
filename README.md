@@ -64,6 +64,75 @@ using Tekla.Extension;
                     .Sum();
         }
 ```
+### How did you code before
+
+```csharp
+public class AssemblyPrefixNumberer
+{
+    public static void NumberSelected()
+    {
+        Tekla.Structures.Model.UI.ModelObjectSelector selector = new Tekla.Structures.Model.UI.ModelObjectSelector();
+        var objects = selector.GetSelectedObjects();
+
+        List<Assembly> assemblies = new List<Assembly>();
+        Assembly tempAssembly;
+        var enumerator = objects.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            try
+            {
+                tempAssembly = enumerator.Current as Assembly;
+                if (tempAssembly != null) assemblies.Add(tempAssembly);
+            }
+            catch { }
+        }
+
+        int index = 1;
+        Part tempPart;
+        foreach (Assembly assembly in assemblies)
+        {
+            var parts = assembly.GetSecondaries();
+            parts.Add(assembly.GetMainPart());
+            foreach (object partObj in parts)
+            {
+                tempPart = partObj as Part;
+                if (tempPart != null)
+                {
+                    // Изначально хотел заполнить поле префикс сборки для детали, но это не работает.
+                    tempPart.AssemblyNumber.Prefix = $"{index}";
+                    tempPart.Modify();
+                }
+            }
+            index++;
+        }
+        var result = new Model().CommitChanges();
+    }
+}
+
+```
+### The same code after using Tekla.Extension
+
+```csharp
+public class AssemblyPrefixNumberer
+{
+    public static void NumberSelected()
+    {
+        int index = 1;
+        new Tekla.Structures.Model.UI.ModelObjectSelector().GetSelectedObjects()
+            .ToIEnumerable<Assembly>()
+            .SelectMany(a => a.GetAllPartsOfAssembly())
+            .ToList()
+            .ForEach(p =>
+            {
+                p.PartNumber.Prefix = index.ToString("0");
+                p.Modify();
+                index++;
+            });
+
+         new Model().CommitChanges();
+     }
+}
+```
 
 ### Non case sensetive report property
 ```csharp
