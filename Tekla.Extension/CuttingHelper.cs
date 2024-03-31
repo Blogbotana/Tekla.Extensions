@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
 
@@ -91,5 +92,48 @@ public static class CuttingHelper
         fitting.Plane = plane;
         _ = fitting.Insert();
         return fitting;
+    }
+    public static ModelObject CutPartByPolygon(Part part, IReadOnlyCollection<ContourPoint> points, double thickness = 200)
+    {
+        ContourPlate contourPlate = new();
+        contourPlate.Profile.ProfileString =thickness.ToString("0.0", CultureInfo.InvariantCulture);
+        contourPlate.Material.MaterialString = "ANTIMATERIAL";
+        contourPlate.Class = BooleanPart.BooleanOperativeClassName;
+        contourPlate.Position.Depth = Position.DepthEnum.MIDDLE;
+
+        foreach (ContourPoint point in points)
+        {
+            _ = contourPlate.AddContourPoint(point);
+        }
+
+        _ = contourPlate.Insert();
+
+        BooleanPart booleanPart = new();
+        booleanPart.Father = part;
+        _ = booleanPart.SetOperativePart(contourPlate);
+
+        _ = booleanPart.Insert();
+        _ = contourPlate.Delete();
+        return booleanPart;
+    }
+    public static ModelObject CutPartByDetail(Part part, LineSegment segment, string profile, Position position)
+    {
+        BooleanPart booleanPart = new();
+        booleanPart.Father = part;
+
+        Beam beam = new(segment.Point1, segment.Point2);
+        beam.Profile.ProfileString = profile;
+        beam.Position = position;
+        beam.Material.MaterialString = "ANTIMATERIAL";
+        beam.Class = BooleanPart.BooleanOperativeClassName;
+
+        beam.Insert();
+
+        booleanPart.SetOperativePart(beam);
+        booleanPart.Insert();
+
+        beam.Delete();
+
+        return booleanPart;
     }
 }
