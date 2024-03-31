@@ -81,7 +81,7 @@ public static class CuttingHelper
         _ = fitting.Insert();
         return fitting;
     }
-    public static ModelObject CutBeamByTwoPoints(Part partToCut, Point startPoint, Point endPoint, Vector cross)
+    public static ModelObject CutBeamByTwoPointsFitting(Part partToCut, Point startPoint, Point endPoint, Vector cross)
     {
         Plane plane = new();
         plane.Origin = startPoint;
@@ -92,6 +92,18 @@ public static class CuttingHelper
         fitting.Plane = plane;
         _ = fitting.Insert();
         return fitting;
+    }
+    public static ModelObject CutBeamByTwoPointsCutPlane(Part partToCut, Point startPoint, Point endPoint, Vector cross)
+    {
+        Plane plane = new();
+        plane.Origin = startPoint;
+        plane.AxisX = new Vector(endPoint - startPoint);
+        plane.AxisY = cross;
+        CutPlane cutPlane = new();
+        cutPlane.Father = partToCut;
+        cutPlane.Plane = plane;
+        _ = cutPlane.Insert();
+        return cutPlane;
     }
     public static ModelObject CutPartByPolygon(Part part, IReadOnlyCollection<ContourPoint> points, double thickness = 200)
     {
