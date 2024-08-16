@@ -8,7 +8,7 @@ namespace Tekla.Extension;
 /// </summary>
 public static class ProfileExtension
 {
-    public static double GetProfileAttribute(string profile, string attribute)
+    public static double GetProfileProperty(string profile, string attribute)
     {
         LibraryProfileItem libraryProfileItem = new();
         libraryProfileItem.ProfileName = profile;
@@ -32,7 +32,37 @@ public static class ProfileExtension
 
             ProfileItemParameter parametr = parametricProfileItem.aProfileItemParameters
                 .Cast<ProfileItemParameter>()
-                .Where(p => string.Equals(p.Property, attribute))
+                .Where(p => string.Equals(p.Property, attribute, StringComparison.InvariantCulture))
+                .FirstOrDefault();
+
+            return parametr is null ? 0 : parametr.Value;
+        }
+    }
+    public static double GetProfileSymbol(string profile, string symbol)
+    {
+        LibraryProfileItem libraryProfileItem = new();
+        libraryProfileItem.ProfileName = profile;
+        if (libraryProfileItem.Select())
+        {
+            ProfileItemParameter parametr = libraryProfileItem.aProfileItemParameters
+                .Cast<ProfileItemParameter>()
+                .Where(p => string.Equals(p.Symbol, symbol, StringComparison.InvariantCulture))
+                .FirstOrDefault();
+
+            return parametr is null ? 0 : parametr.Value;
+        }
+        else
+        {
+            ParametricProfileItem parametricProfileItem = new();
+            parametricProfileItem.ProfilePrefix = profile;
+            bool isok = parametricProfileItem.Select();
+
+            if (!isok)
+                return 0;
+
+            ProfileItemParameter parametr = parametricProfileItem.aProfileItemParameters
+                .Cast<ProfileItemParameter>()
+                .Where(p => string.Equals(p.Symbol, symbol, StringComparison.InvariantCulture))
                 .FirstOrDefault();
 
             return parametr is null ? 0 : parametr.Value;
@@ -40,11 +70,11 @@ public static class ProfileExtension
     }
     public static double GetProfileHeight(string profile)
     {
-        return GetProfileAttribute(profile, "HEIGHT");
+        return GetProfileProperty(profile, "HEIGHT");
     }
     public static double GetProfileWidth(string profile)
     {
-        return GetProfileAttribute(profile, "WIDTH");
+        return GetProfileProperty(profile, "WIDTH");
     }
     public static bool IsProfileExist(string profile)
     {
@@ -53,11 +83,10 @@ public static class ProfileExtension
         bool isStatic = libraryProfileItem.Select();
         if (isStatic)
             return isStatic;
-        else
-        {
-            ParametricProfileItem parametricProfileItem = new();
-            return parametricProfileItem.Select();
-        }
+
+        ParametricProfileItem parametricProfileItem = new();
+        parametricProfileItem.ProfilePrefix = profile;
+        return parametricProfileItem.Select();
     }
     /// <summary>
     /// Get width of plate without inserting in tekla. PL10 will return 10.
