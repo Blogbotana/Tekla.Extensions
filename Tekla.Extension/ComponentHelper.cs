@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Tekla.Structures;
+using Tekla.Structures.Geometry3d;
 using Tekla.Structures.Model;
 
 namespace Tekla.Extension;
@@ -118,5 +121,72 @@ public static class ComponentHelper
             }
         }
         return defaultValue;
+    }
+    public static Point[] GetInputPointsOfComponent(Component component)
+    {
+        List<Point> inputPoints = new();
+        ComponentInput originalInput = component.GetComponentInput();
+        if (originalInput is null)
+            return Array.Empty<Point>();
+
+
+        foreach (object inputItem in originalInput)
+        {
+            if (inputItem is not InputItem item)
+                continue;
+
+            switch (item.GetInputType())
+            {
+                case InputItem.InputTypeEnum.INPUT_1_POINT:
+                    inputPoints.Add(item.GetData() as Point);
+                    break;
+                case InputItem.InputTypeEnum.INPUT_2_POINTS or InputItem.InputTypeEnum.INPUT_POLYGON:
+                    {
+                        if (item.GetData() is not ArrayList data)
+                            break;
+
+                        inputPoints.AddRange(data.Cast<Point>());
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+        return inputPoints.ToArray();
+    }
+    public static IReadOnlyCollection<ModelObject> GetInputObjectsOfComponent(Component component)
+    {
+        var model = new Tekla.Structures.Model.Model();
+        List<ModelObject> inputObjects = new();
+        ComponentInput originalInput = component.GetComponentInput();
+        if (originalInput is null)
+            return Array.Empty<ModelObject>();
+
+        foreach (object inputItem in originalInput)
+        {
+            if (inputItem is not InputItem item)
+                continue;
+
+            switch (item.GetInputType())
+            {
+                case InputItem.InputTypeEnum.INPUT_1_OBJECT:
+                    var inputObject = item.GetData() as ModelObject;
+                    if (inputObject is not null && inputObject.Identifier.ID != 0)
+                        inputObjects.Add(inputObject);
+                    break;
+                case InputItem.InputTypeEnum.INPUT_N_OBJECTS:
+                    {
+                        if (item.GetData() is not ArrayList data)
+                            break;
+
+                        inputObjects.AddRange(data.Cast<ModelObject>()
+                            .Where(o => o is not null && o.Identifier.ID != 0));
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+        return inputObjects;
     }
 }
