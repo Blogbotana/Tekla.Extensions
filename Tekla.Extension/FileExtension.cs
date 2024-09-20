@@ -12,7 +12,12 @@ namespace Tekla.Extension
     public static class FileExtension
     {
         public const string AttributeFolder = "attributes";
-        public static IReadOnlyCollection<string> GetFiles(string searchPattern)
+        /// <summary>
+        /// Return only name of files for loading attributes
+        /// </summary>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
+        public static IReadOnlyCollection<string> GetFilesNames(string searchPattern)
         {
             HashSet<string> files = new();
 
@@ -23,18 +28,42 @@ namespace Tekla.Extension
             _ = TeklaStructuresSettings.GetAdvancedOption("XS_FIRM", ref firmPaths);
             _ = TeklaStructuresSettings.GetAdvancedOption("XS_PROJECT", ref projectPaths);
 
-            GetFiles(files, searchPattern, projectPaths);
-            GetFiles(files, searchPattern, systemPaths);
-            GetFiles(files, searchPattern, firmPaths);
+            GetFiles(files, searchPattern, projectPaths, true);
+            GetFiles(files, searchPattern, systemPaths, true);
+            GetFiles(files, searchPattern, firmPaths, true);
 
             string modelPath = Path.Combine(new Model().GetInfo().ModelPath, AttributeFolder);
-            GetFiles(files, searchPattern, modelPath);
+            GetFiles(files, searchPattern, modelPath, true);
             var sortedSet = files.ToList();
             sortedSet.Sort();
             return sortedSet;
         }
+        /// <summary>
+        /// Return full path of file
+        /// </summary>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
+        public static IReadOnlyCollection<string> GetFilesFull(string searchPattern)
+        {
+            HashSet<string> files = new();
 
-        private static void GetFiles(HashSet<string> hashSet, string searchPattern, string currentPaths)
+            string projectPaths = string.Empty;
+            string systemPaths = string.Empty;
+            string firmPaths = string.Empty;
+            _ = TeklaStructuresSettings.GetAdvancedOption("XS_SYSTEM", ref systemPaths);
+            _ = TeklaStructuresSettings.GetAdvancedOption("XS_FIRM", ref firmPaths);
+            _ = TeklaStructuresSettings.GetAdvancedOption("XS_PROJECT", ref projectPaths);
+
+            GetFiles(files, searchPattern, projectPaths, false);
+            GetFiles(files, searchPattern, systemPaths, false);
+            GetFiles(files, searchPattern, firmPaths, false);
+
+            string modelPath = Path.Combine(new Model().GetInfo().ModelPath, AttributeFolder);
+            GetFiles(files, searchPattern, modelPath, false);
+            return files;
+        }
+
+        private static void GetFiles(HashSet<string> hashSet, string searchPattern, string currentPaths, bool isOnlyFilename)
         {
             if (currentPaths.Length == 0)
                 return;
@@ -49,7 +78,11 @@ namespace Tekla.Extension
                 foreach (string file in filesPath)
                 {
                     string fileName = Path.GetFileNameWithoutExtension(file);
-                    hashSet.Add(fileName);
+
+                    if (isOnlyFilename)
+                        hashSet.Add(fileName);
+                    else
+                        hashSet.Add(file);
                 }
             }
         }
