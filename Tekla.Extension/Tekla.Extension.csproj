@@ -128,7 +128,7 @@
       <Version>5.3.17206</Version>
     </PackageReference>
     <PackageReference Include="TeklaOpenAPI">
-      <Version>2020.0.3</Version>
+      <Version>2021.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
