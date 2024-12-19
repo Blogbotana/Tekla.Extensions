@@ -67,8 +67,15 @@ public static class PartExtension
     {
         Solid solid = part.GetSolid(Solid.SolidCreationTypeEnum.RAW);
         Vector vectorOffset = new Vector(1, 1, 1) * offset;
-        Point maximumPoint = solid.MaximumPoint + vectorOffset;
-        Point minimumPoint = solid.MinimumPoint - vectorOffset;
+        Point min = PointExtension.MinPoint;
+        Point max = PointExtension.MaxPoint;
+        PointExtension.ComparePoints(solid.MinimumPoint, min, (x1, x2) => x1 > x2);
+        PointExtension.ComparePoints(solid.MaximumPoint, min, (x1, x2) => x1 > x2);
+        PointExtension.ComparePoints(solid.MinimumPoint, max, (x1, x2) => x1 < x2);
+        PointExtension.ComparePoints(solid.MaximumPoint, max, (x1, x2) => x1 < x2);
+
+        Point maximumPoint = max + vectorOffset;
+        Point minimumPoint = min - vectorOffset;
         return new AABB(maximumPoint, minimumPoint);
     }
 
