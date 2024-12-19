@@ -19,7 +19,7 @@ namespace Tekla.Extension
             Point min = PointExtension.MinPoint;
             Point max = PointExtension.MaxPoint;
 
-            IEnumerable<Part> parts = assembly.GetAllPartsOfAssembly().Cast<Part>();
+            var parts = assembly.GetAllPartsOfAssembly().Cast<Part>().ToList();
 
             foreach (Part item in parts)
             {
@@ -28,6 +28,8 @@ namespace Tekla.Extension
                 Point max_point = solid.MaximumPoint;
 
                 PointExtension.ComparePoints(min_point, min, (x1, x2) => x1 > x2);
+                PointExtension.ComparePoints(max_point, min, (x1, x2) => x1 > x2);
+                PointExtension.ComparePoints(min_point, max, (x1, x2) => x1 < x2);
                 PointExtension.ComparePoints(max_point, max, (x1, x2) => x1 < x2);
             }
 
